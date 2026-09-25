@@ -1,4 +1,6 @@
-﻿# Telegram Bot Started
+#БОТ В РАЗРАБОТКЕ!!!
+РАБОТАЕТ ТОЛЬКО holehe
+ # Telegram Bot Started
 Методы для сообщений:
 
     message.from_user.id - узнать уникальный ID пользователя
