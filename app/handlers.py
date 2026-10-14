@@ -5,11 +5,10 @@ from aiogram.fsm.context import FSMContext
 
 import app.keyboards as kb
 
-from app.text import text_start, text_probit_gmail, text_vedite_gmail
+from app.text import text_start, text_probit, text_vedite_gmail
 from app.database.requests import set_user
 from app.tools.holehe_tg import holehe_probiv
 from app.states import Probiv
-
 
 
 router = Router()
@@ -29,7 +28,7 @@ async def cmd_back_to_menu(callback: CallbackQuery):
 
 @router.message(F.text == "ПРОБИТЬ GMAIL")
 async def cmd_probit_gmail(message: Message):
-    await message.answer(text_probit_gmail,
+    await message.answer(text_probit,
                          reply_markup=kb.inline_probiv_menu)
 
 
