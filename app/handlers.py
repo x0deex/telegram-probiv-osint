@@ -13,32 +13,53 @@ from app.states import Probiv
 
 router = Router()
 
-
+# /start
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await set_user(message.from_user.id)
     await message.answer(text_start,
-                         reply_markup=kb.reply_menu)
+                         reply_markup=kb.inline_menu)
 
+# КНОПКА НАЗАД
 @router.callback_query(F.data == "back_to_menu")
 async def cmd_back_to_menu(callback: CallbackQuery):
     await callback.answer("")
-    await callback.message.answer(text_start,
-                         reply_markup=kb.reply_menu)
+    await callback.message.edit_text(text_start,
+                         reply_markup=kb.inline_menu)
 
-@router.message(F.text == "ПРОБИТЬ GMAIL")
-async def cmd_probit_gmail(message: Message):
-    await message.answer(text_probit,
+# КНОПКА ПРОБИТЬ (INLINE)
+@router.callback_query(F.data == "probiv")
+async def cmd_probit_gmail(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text(text_probit,
                          reply_markup=kb.inline_probiv_menu)
 
+@router.callback_query(F.data == "call_dork_probiv")
+async def cmd_call_dork_probiv(callback: CallbackQuery):
+    await callback.answer()
+    await callback.message.edit_text("Выберите из пункта ниже: ",
+                                  reply_markup=kb.inline_probiv_dork)
 
+
+
+
+
+
+
+
+
+
+
+
+
+# ЗАПРОС НА ПРОБИВ GMAIL
 @router.callback_query(F.data == "call_holehe_probiv")
 async def cmd_call_holehe_probiv(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
     await state.set_state(Probiv.text_probiv)
-    await callback.message.answer(text_vedite_gmail)
+    await callback.message.edit_text(text_vedite_gmail)
 
-
+# ОБРАБОТКА ЗАПРОСА НА ПРОБИВ GMAIL
 @router.message(Probiv.text_probiv)
 async def process_holehe(message: Message, state: FSMContext):
     email = message.text.strip()
