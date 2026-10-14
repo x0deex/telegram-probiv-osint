@@ -5,7 +5,7 @@ from aiogram.fsm.context import FSMContext
 
 import app.keyboards as kb
 
-from app.text import text_start, text_probit, text_vedite_gmail
+from app.text import text_start, text_probit, text_vedite_gmail, text_vedite_dork_profile, text_vedite_dork_domen, text_vedite_dork_gmail, text_vedite_dork_inn, text_vedite_dork_ip, text_vedite_dork_nick, text_vedite_dork_number, text_vedite_dork_site_cash
 from app.database.requests import set_user
 from app.tools.holehe_tg import holehe_probiv
 from app.states import Probiv
@@ -34,21 +34,63 @@ async def cmd_probit_gmail(callback: CallbackQuery):
     await callback.message.edit_text(text_probit,
                          reply_markup=kb.inline_probiv_menu)
 
+# КНОПКИ ДОРКА
 @router.callback_query(F.data == "call_dork_probiv")
 async def cmd_call_dork_probiv(callback: CallbackQuery):
     await callback.answer()
     await callback.message.edit_text("Выберите из пункта ниже: ",
                                   reply_markup=kb.inline_probiv_dork)
 
+# ПРОВЕРКА НА КНОПКУ ДОРК#1 ДОРК#2 ДОРК#6...
+@router.callback_query(F.data.startswith("dork_"))
+async def process_dork(callback: CallbackQuery, state: FSMContext):
+    _dork_ = callback.data.split("_", 1)[1]
 
+    await callback.answer()
+    await state.set_state(Probiv.dork_probiv)
 
-
-
-
-
-
-
-
+    if _dork_ == "1":
+        await callback.message.edit_text(text_vedite_dork_profile)
+    elif _dork_ == "2":
+        await callback.message.edit_text(text_vedite_dork_gmail)
+    elif _dork_ == "3":
+        await callback.message.edit_text(text_vedite_dork_number)
+    elif _dork_ == "4":
+        await callback.message.edit_text()
+    elif _dork_ == "5":
+        await callback.message.edit_text()
+    elif _dork_ == "6":
+        await callback.message.edit_text()
+    elif _dork_ == "7":
+        await callback.message.edit_text()
+    elif _dork_ == "8":
+        await callback.message.edit_text()
+    elif _dork_ == "9":
+        await callback.message.edit_text()
+    elif _dork_ == "10":
+        await callback.message.edit_text(text_vedite_dork_domen)
+    elif _dork_ == "11":
+        await callback.message.edit_text()
+    elif _dork_ == "12":
+        await callback.message.edit_text()
+    elif _dork_ == "13":
+        await callback.message.edit_text(text_vedite_dork_site_cash)
+    elif _dork_ == "14":
+        await callback.message.edit_text()
+    elif _dork_ == "15":
+        await callback.message.edit_text(text_vedite_dork_nick)
+    elif _dork_ == "16":
+        await callback.message.edit_text()
+    elif _dork_ == "17":
+        await callback.message.edit_text(text_vedite_dork_ip)
+    elif _dork_ == "18":
+        await callback.message.edit_text()
+    elif _dork_ == "19":
+        await callback.message.edit_text()
+    elif _dork_ == "20":
+        await callback.message.edit_text(text_vedite_dork_inn)
+    elif _dork_ == "21":
+        await callback.message.edit_text()
 
 
 
@@ -56,11 +98,11 @@ async def cmd_call_dork_probiv(callback: CallbackQuery):
 @router.callback_query(F.data == "call_holehe_probiv")
 async def cmd_call_holehe_probiv(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
-    await state.set_state(Probiv.text_probiv)
+    await state.set_state(Probiv.gmail_probiv)
     await callback.message.edit_text(text_vedite_gmail)
 
 # ОБРАБОТКА ЗАПРОСА НА ПРОБИВ GMAIL
-@router.message(Probiv.text_probiv)
+@router.message(Probiv.gmail_probiv)
 async def process_holehe(message: Message, state: FSMContext):
     email = message.text.strip()
     # Убираем состояние, чтобы повторное сообщение
